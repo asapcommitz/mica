@@ -20,3 +20,24 @@ or copy the binary to `/usr/local/bin/mfetch` and run `mfetch`.
 
 ### Screenshot
 ![mfetch on Fedora Workstation 43](screenshots/mfetch.png)
+
+## mnet
+mnet is a fast, lightweight network tool written in C, made to show essential network information with minimal overhead on low-end machines. Information is read directly from the system, not from external commands.
+
+### Features
+- Fast and lightweight
+- Simple and clean interface
+- Written in C and the musl library
+- Static binary
+- Small file size (111KB)
+- Again, no external commands
+
+### Usage
+```bash
+./mnet
+```
+
+or copy the binary to `/usr/local/bin/mnet` and run `mnet`.
+
+### Screenshot
+![mnet on Fedora Workstation 43](screenshots/mnet.png)
