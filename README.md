@@ -1,4 +1,4 @@
-# mica 
+# mica
 mica is my collection of absolutely TINY tools for small PCs like IBM's PowerPC, Raspberry Pi ≤3, and other low-end or resource-constrained machines.
 
 ## mfetch
