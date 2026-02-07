@@ -19,7 +19,13 @@ mfetch is a fast, lightweight fetch tool written in C, made to show essential sy
 or copy the binary to `/usr/local/bin/mfetch` and run `mfetch`.
 
 ### Screenshot
-![mfetch on Fedora Workstation 43](screenshots/mfetch.png)
+<details>
+  <summary>Click to expand</summary>
+  
+  ![mfetch on Fedora Workstation 43](screenshots/mfetch.png)
+</details>
+
+---
 
 ## mnet
 mnet is a fast, lightweight network tool written in C, made to show essential network information with minimal overhead on low-end machines. Information is read directly from the system, not from external commands.
@@ -40,4 +46,13 @@ mnet is a fast, lightweight network tool written in C, made to show essential ne
 or copy the binary to `/usr/local/bin/mnet` and run `mnet`.
 
 ### Screenshot
-![mnet on Fedora Workstation 43](screenshots/mnet.png)
+<details>
+  <summary>Click to expand</summary>
+  
+  ![mnet on Fedora Workstation 43](screenshots/mnet.png)
+</details>
+
+---
+
+### License
+mica is licensed under the [MIT License](LICENSE).
