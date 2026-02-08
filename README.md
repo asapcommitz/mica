@@ -1,5 +1,5 @@
 # mica
-mica is my collection of absolutely TINY tools for small PCs like IBM's PowerPC, Raspberry Pi ≤3, and other low-end or resource-constrained machines.
+mica is my collection of absolutely TINY tools for small PCs like IBM's PowerPC, Raspberry Pi ≤3, Linux devices which don't have much power and other low-end or resource-constrained machine.
 
 ## mfetch
 mfetch is a fast, lightweight fetch tool written in C, made to show essential system information with minimal overhead on low-end machines. Information is read directly from the system, not from external commands.
