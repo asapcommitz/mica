@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mica Documentation</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/asapcommitz/vanilla@latest/styles.css">
+    <script>
+        // Simple routing for vanilla.md
+        function getPage() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('page') || 'index.md';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const page = getPage();
+            const main = document.querySelector('main');
+            main.setAttribute('data-vanillamd-autofill', page);
+
+            // Update active link in sidebar
+            const links = document.querySelectorAll('.sidebar nav a');
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && href.includes(page)) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="app-wrapper">
+        <aside class="sidebar">
+            <a href="?page=index.md" class="logo">Mica</a>
+            <nav data-vanillamd-sidebar>
+                <a href="?page=index.md">Introduction</a>
+                <a href="?page=mfetch.md">mfetch</a>
+                <a href="?page=mnet.md">mnet</a>
+                <a href="?page=building.md">Building</a>
+            </nav>
+        </aside>
+
+        <main data-vanillamd-autofill="index.md"></main>
+    </div>
+
+    <!-- vanilla.md runtime -->
+    <script src="https://cdn.jsdelivr.net/gh/asapcommitz/vanilla@latest/runtime.js"></script>
+</body>
+
+</html>
