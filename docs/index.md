@@ -12,8 +12,8 @@ If you are new to Mica, start with the building guide to learn how to compile th
 
 Detailed information about each tool in the Mica collection:
 
-* [mfetch](mfetch.md) - Neofetch-style system fetcher
-* [mnet](mnet.md) - Network status & diagnostic tool
+* [mfetch](mfetch.md) - Neofetch-style system fetcher.
+* [mnet](mnet.md) - Network status & diagnostic tool.
 
 ## Philosophy
 
