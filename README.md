@@ -1,22 +1,31 @@
-# mica
-mica is my collection of absolutely TINY tools for small PCs like IBM's PowerPC, Raspberry Pi ≤3, Linux devices which don't have much power and other low-end or resource-constrained machine.
+# Mica
 
-## mfetch
-mfetch is a fast, lightweight fetch tool written in C, made to show essential system information with minimal overhead on low-end machines. Information is read directly from the system, not from external commands.
+Mica is a collection of absolutely **TINY** (under 1MB) tools for Linux. Built for resource-constrained machines (PowerPC, Raspberry Pi 1/Zero, etc.), every tool is statically linked using `musl` and reads data directly from the system kernel.
 
-### Features
-- Fast and lightweight
-- Simple and clean interface
-- Written in C and the musl library
-- Static binary
-- Small file size (77KB)
+## Tools
 
-### Usage
+| Tool | Purpose | Size | Docs |
+| :--- | :--- | :--- | :--- |
+| **mfetch** | Neofetch-style system fetcher | ~77KB | [Docs](docs/mfetch.md) |
+| **mnet** | Network status & diagnostic tool | ~111KB | [Docs](docs/mnet.md) |
+
+## Quick Start
+ 
+To build a tool, ensure you have `musl-gcc` installed and run `make` in the respective directory:
+
 ```bash
-./mfetch
+cd mfetch && make
+cd ../mnet && make
 ```
 
-or copy the binary to `/usr/local/bin/mfetch` and run `mfetch`.
+Check the [Building Guide](docs/building.md) for more details.
+
+## Philosophy
+
+1. **Static Everything:** Binaries must be statically linked. Copy the binary and it just works.
+2. **Pure Data:** Prefer `/proc` and `/sys` over external library wrappers or command forks.
+3. **Small & Stripped:** Optimize for size (`-Os`) and strip symbols.
+4. **Musl Powered:** Use the `musl` libc for the smallest possible static footprint.
 
 ### Screenshot
 <details>
