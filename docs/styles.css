@@ -72,12 +72,19 @@ body {
   position: sticky;
   top: 0;
   border-right: 1px solid var(--border-color);
-  padding: 2.5rem 1.5rem;
+  padding: 1.5rem 1.5rem;
   background-color: var(--bg-color);
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
   overflow-y: auto;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
 }
 
 .sidebar .logo {
@@ -86,9 +93,27 @@ body {
   font-size: 1.15rem;
   text-decoration: none;
   color: var(--text-color);
-  margin-bottom: 2.5rem;
-  display: block;
   letter-spacing: 0.05rem;
+}
+
+.top-nav {
+  display: flex;
+  gap: 1rem;
+}
+
+.github-link {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border: 1px solid var(--border-color);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.github-link:hover {
+  color: var(--text-color);
+  border-color: var(--text-color);
 }
 
 .sidebar nav {

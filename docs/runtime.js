@@ -27643,7 +27643,10 @@ pre>code.diff-highlight .token.inserted:not(.prefix) {
 			});
 
 			text = text.replace(/\[([^\]]+)\]\(([^\s)"]+)(?:\s+"([^"]+)")?\)/g, (match, linkText, url, title) => {
-				return title ? `<a href="${url}" title="${title}">${linkText}</a>` : `<a href="${url}">${linkText}</a>`;
+				const isExternal = /^(?:https?|ftp):\/\//.test(url);
+				const arrow = isExternal ? ' &#x2197;' : '';
+				const content = linkText + arrow;
+				return title ? `<a href="${url}" title="${title}">${content}</a>` : `<a href="${url}">${content}</a>`;
 			});
 
 			text = text.replace(/~~([^~]+)~~/g, '<del>$1</del>');
@@ -27659,7 +27662,8 @@ pre>code.diff-highlight .token.inserted:not(.prefix) {
 			text = text.replace(/\^\^([^\^]+)\^\^/g, '<sup>$1</sup>');
 			text = text.replace(/~([^~]+)~/g, '<sub>$1</sub>');
 
-			text = text.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1">$1</a>');
+			// 2. Auto-link URLs (excluding those already in HTML attributes)
+			text = text.replace(/([^"'])((?:https?|ftp):\/\/[^\s<]+)/g, '$1<a href="$2">$2 &#x2197;</a>');
 
 			text = text.replace(/:\w+:/g, (match) => {
 				const emoji = this.getEmoji(match);
@@ -27677,7 +27681,7 @@ pre>code.diff-highlight .token.inserted:not(.prefix) {
 				':fire:': '🔥',
 				':rocket:': '🚀',
 				':check:': '✓',
-				':x:': '✗',
+				':cross:': '✗',
 				':warning:': '⚠️',
 				':info:': 'ℹ️',
 				':bulb:': '💡',
@@ -27743,11 +27747,16 @@ pre>code.diff-highlight .token.inserted:not(.prefix) {
 				// Lazy load headings on open
 				details.addEventListener('toggle', async () => {
 					if (details.open && content.innerHTML === '') {
-						const pageMatch = href.match(/\?page=([^&]+)/) || [null, href];
-						const src = pageMatch[1];
+						// Fix: Correctly extract the source path
+						let src = href;
+						const pageMatch = href.match(/[?&]page=([^&]+)/);
+						if (pageMatch) {
+							src = pageMatch[1];
+						}
 
 						try {
 							content.innerHTML = '<div class="sidebar-loading">Loading...</div>';
+							// Use the robust fetch logic here too if needed, but for now standard fetch
 							const md = await fetch(src).then(r => r.text());
 							const { headings } = renderer.renderMarkdown(md);
 							content.innerHTML = '';
