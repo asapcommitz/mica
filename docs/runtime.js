@@ -27363,7 +27363,9 @@ pre>code.diff-highlight .token.inserted:not(.prefix) {
 			if (!src) return;
 
 			try {
-				const md = await fetch(src).then(r => r.text());
+				const response = await fetch(src);
+				if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+				const md = await response.text();
 				const { html, headings } = this.renderMarkdown(md);
 				this.innerHTML = html;
 
@@ -27405,7 +27407,7 @@ pre>code.diff-highlight .token.inserted:not(.prefix) {
 
 			const flushBlockquote = () => {
 				if (blockquoteBuffer.length) {
-					html += `<blockquote>${this.renderMarkdown(blockquoteBuffer.join('\n'))}</blockquote>`;
+					html += `<blockquote>${this.renderMarkdown(blockquoteBuffer.join('\n')).html}</blockquote>`;
 					blockquoteBuffer = [];
 					inBlockquote = false;
 				}
@@ -27708,9 +27710,17 @@ pre>code.diff-highlight .token.inserted:not(.prefix) {
 		if (sidebarElement) {
 			const renderer = new ContentElement();
 
-			// 1. Setup Wrapper and Lazy-loading for all sidebar links
+			// 1. Setup Wrapper and Lazy-loading for appropriate sidebar links
 			const wrapSidebarLink = (a) => {
+				// Don't wrap if already wrapped, or if it's an external link
 				if (a.parentNode.classList.contains('nav-link-wrapper')) return;
+
+				const href = a.getAttribute('href') || '';
+				const isExternal = href.startsWith('http') || a.getAttribute('target') === '_blank';
+				const isMarkdown = href.includes('.md') || href.includes('?page=');
+
+				// Only wrap internal markdown links
+				if (isExternal || !isMarkdown) return;
 
 				const wrapper = document.createElement('div');
 				wrapper.className = 'nav-link-wrapper';
@@ -27733,7 +27743,6 @@ pre>code.diff-highlight .token.inserted:not(.prefix) {
 				// Lazy load headings on open
 				details.addEventListener('toggle', async () => {
 					if (details.open && content.innerHTML === '') {
-						const href = a.getAttribute('href');
 						const pageMatch = href.match(/\?page=([^&]+)/) || [null, href];
 						const src = pageMatch[1];
 
@@ -27744,7 +27753,7 @@ pre>code.diff-highlight .token.inserted:not(.prefix) {
 							content.innerHTML = '';
 							buildTocTree(headings, content);
 						} catch (e) {
-							content.innerHTML = ''; // Keep it empty on failure
+							content.innerHTML = '';
 						}
 					}
 				});
@@ -27752,6 +27761,7 @@ pre>code.diff-highlight .token.inserted:not(.prefix) {
 
 			const buildTocTree = (headings, container) => {
 				if (!headings || headings.length === 0) return;
+				container.innerHTML = ''; // Ensure clear
 				const treeRoot = document.createElement('div');
 				treeRoot.className = 'sidebar-nav-tree';
 				let currentLevel = 0;
@@ -27797,14 +27807,22 @@ pre>code.diff-highlight .token.inserted:not(.prefix) {
 			document.addEventListener('nav-loaded', (e) => {
 				const { headings, src } = e.detail;
 				const allLinks = sidebarElement.querySelectorAll('a:not(.sub-link)');
+
 				allLinks.forEach(a => {
+					const href = a.getAttribute('href') || '';
 					const details = a.closest('details');
-					if (a.getAttribute('href').includes(src)) {
+
+					// Improved matching logic
+					const isActive = href.includes(src) ||
+						(src === 'index.md' && (href === 'index.html' || href === './')) ||
+						(src === 'content.md' && (href === 'index.html' || href === './'));
+
+					if (isActive) {
 						a.classList.add('active');
 						if (details) {
 							details.open = true;
 							const content = details.querySelector('.nav-section-content');
-							if (content && content.innerHTML === '') {
+							if (content && (content.innerHTML === '' || content.querySelector('.sidebar-loading'))) {
 								buildTocTree(headings, content);
 							}
 						}
